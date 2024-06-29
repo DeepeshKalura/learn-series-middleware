@@ -34,10 +34,6 @@ class LocalTimeConversionMiddleware(BaseHTTPMiddleware):
 
         return await call_next(request)
 
-
-
-
-                              
 app.add_middleware(LocalTimeConversionMiddleware)
 
 @app.get("/")
