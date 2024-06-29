@@ -1,7 +1,8 @@
 import datetime
+import pytz
 from sqlalchemy import Integer, String, Column, DateTime
 
-from .database import Base 
+from .db import Base 
 
 
 class User(Base):
@@ -11,7 +12,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, autoincrement="auto")
     email = Column(String, unique=True)
     password = Column(String)
-    create_at = Column(DateTime, default=datetime.UTC)
+    create_at = Column(DateTime, default=datetime.datetime.now(pytz.UTC))
 
 
 
