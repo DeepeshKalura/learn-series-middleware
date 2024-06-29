@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
+import pytz
 from app.schema.user_schema import UserBaseModel 
 from sqlalchemy.orm import Session
 
@@ -15,9 +16,16 @@ router = APIRouter(
 async def list_of_user(db:Session= Depends(get_db)):
     return crud.get_user(db=db, user_id=None)
 
+
 @router.get("/{id}")
-async def list_user(id=id, db: Session = Depends(get_db)):
-    return crud.get_user(db=db, user_id=id)
+async def list_user(request:Request, id=id, db: Session = Depends(get_db)):
+    user = crud.get_user(db=db, user_id=id)
+    print(user.create_at)
+
+    cts = user.create_at
+    user.create_at = cts.astimezone(pytz.timezone(request.headers.get("x-timezone")))
+
+    return user
     
 
 @router.post("/")
